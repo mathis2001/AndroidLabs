@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Private statement</title>
+<style>
+body{margin:0;background:#f2f7f9;color:#102642;font:16px system-ui,sans-serif}header{background:#102642;color:white;padding:28px 23px}small{color:#25d1a5;font-weight:700;letter-spacing:.13em}h1{font-size:27px;margin:10px 0 0}main{padding:22px}.card{background:white;border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 5px 18px #20344b10}.muted{color:#63798a}.amount{font-size:31px;font-weight:700}.line{display:flex;justify-content:space-between;border-top:1px solid #e3eaed;padding:14px 0}
+</style></head><body>
+<header><small>CONFIDENTIAL</small><h1>November statement</h1></header>
+<main><div class="card"><div class="muted">Current account ···· 4819</div><p class="amount">€ 12,480.75</p><div class="line"><span>Incoming</span><strong>€ 3,200.00</strong></div><div class="line"><span>Outgoing</span><strong>€ 1,047.60</strong></div></div>
+<div class="card"><strong>Message centre</strong><p class="muted">Your banker can send a note about this statement.</p><div id="banker-note">No messages yet.</div></div></main>
+<script>
+  window.addEventListener('message', function (event) {
+    if (event.data && typeof event.data.html === 'string') {
+      document.getElementById('banker-note').innerHTML = event.data.html;
+    }
+  });
+</script></body></html>

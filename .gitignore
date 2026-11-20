@@ -1,0 +1,11 @@
+**/.gradle/
+**/build/
+**/.idea/
+**/local.properties
+*.iml
+*.keystore
+*.jks
+.agents/
+.aws/
+.codex/
+.git-prepared/
