@@ -1,0 +1,31 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
+        android:allowBackup="false"
+        android:icon="@drawable/ic_app"
+        android:label="Hide'N Seek"
+        android:theme="@style/AppTheme">
+
+        <activity android:name=".ContactsActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ChatActivity" android:exported="false" />
+        <activity android:name=".PhotoActivity" android:exported="false" />
+        <activity android:name=".SettingsActivity" android:exported="false" />
+        <activity android:name=".RestoreActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/json" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+        <provider
+            android:name=".SecureImageVault"
+            android:authorities="org.hidenseek.lab.vault"
+            android:exported="false"
+            android:grantUriPermissions="true" />
+    </application>
+</manifest>

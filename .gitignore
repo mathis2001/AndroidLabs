@@ -9,3 +9,5 @@
 .aws/
 .codex/
 .git-prepared/
+**/writeup.md
+**/instructor/
