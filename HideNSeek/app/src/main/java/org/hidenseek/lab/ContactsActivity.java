@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 public final class ContactsActivity extends Activity {
     private LinearLayout list;
+    private String currentFilter = "";
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
@@ -63,11 +64,19 @@ public final class ContactsActivity extends Activity {
         render("");
         search.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) { render(s.toString()); }
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                currentFilter = s.toString();
+                render(currentFilter);
+            }
             @Override public void afterTextChanged(Editable s) { }
         });
         Ui.footer(this, root, true, () -> { },
             () -> startActivity(new Intent(this, SettingsActivity.class)));
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        if (list != null) render(currentFilter);
     }
 
     private void render(String filter) {
@@ -104,9 +113,13 @@ public final class ContactsActivity extends Activity {
         LinearLayout first = Ui.horizontal(this);
         content.addView(first);
         first.addView(Ui.text(this, thread.name, 16, Ui.INK, true), new LinearLayout.LayoutParams(0, -2, 1));
-        first.addView(Ui.text(this, thread.time, 11, Ui.MUTED, false));
+        java.util.ArrayList<DemoData.Message> saved = ChatStore.messages(this, thread.id);
+        DemoData.Message latest = saved.isEmpty() ? null : saved.get(saved.size() - 1);
+        first.addView(Ui.text(this, latest == null ? thread.time : latest.time, 11, Ui.MUTED, false));
         Ui.gap(this, content, 5);
-        TextView preview = Ui.text(this, thread.preview, 13, Ui.MUTED, false);
+        String snippet = latest == null ? thread.preview :
+            latest.mediaId >= 0 ? "You sent a photo" : latest.body;
+        TextView preview = Ui.text(this, snippet, 13, Ui.MUTED, false);
         preview.setSingleLine(true);
         preview.setEllipsize(android.text.TextUtils.TruncateAt.END);
         content.addView(preview);

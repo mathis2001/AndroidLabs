@@ -15,7 +15,9 @@ public final class PhotoActivity extends Activity {
         super.onCreate(state);
         int slot = getIntent().getIntExtra("slot", -1);
         DemoData.Media media = DemoData.media(slot);
-        if (media == null) { finish(); return; }
+        if (media == null && getSharedPreferences("vault-index", 0).getInt("media_" + slot, -1) < 0) {
+            finish(); return;
+        }
 
         LinearLayout root = Ui.vertical(this);
         root.setBackgroundColor(Color.rgb(20, 22, 34));
@@ -28,7 +30,7 @@ public final class PhotoActivity extends Activity {
         close.setGravity(Gravity.CENTER);
         bar.addView(close, new LinearLayout.LayoutParams(Ui.dp(this, 42), Ui.dp(this, 46)));
         close.setOnClickListener(v -> finish());
-        TextView title = Ui.text(this, media.title, 18, Color.WHITE, true);
+        TextView title = Ui.text(this, media == null ? "Shared photo" : media.title, 18, Color.WHITE, true);
         LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(0, -2, 1);
         titleParams.leftMargin = Ui.dp(this, 10);
         bar.addView(title, titleParams);
@@ -42,7 +44,7 @@ public final class PhotoActivity extends Activity {
         stage.addView(image, new FrameLayout.LayoutParams(-1, -1));
         stage.setOnClickListener(v -> finish());
 
-        if (media.identity) {
+        if (media != null && media.identity) {
             TextView note = Ui.text(this, "Private document · preview only", 13, Color.rgb(194, 197, 211), false);
             note.setGravity(Gravity.CENTER);
             note.setPadding(0, 0, 0, Ui.dp(this, 24));

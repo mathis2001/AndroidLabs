@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.FrameLayout;
@@ -14,12 +15,14 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 public final class ChatActivity extends Activity {
+    private static final int PICK_IMAGE = 41;
     private LinearLayout messages;
     private ScrollView scroll;
+    private DemoData.Conversation thread;
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
-        DemoData.Conversation thread = DemoData.conversation(getIntent().getStringExtra("thread"));
+        thread = DemoData.conversation(getIntent().getStringExtra("thread"));
         LinearLayout root = Ui.screen(this);
         LinearLayout bar = Ui.horizontal(this);
         bar.setPadding(Ui.dp(this, 18), Ui.dp(this, 16), Ui.dp(this, 18), Ui.dp(this, 16));
@@ -57,7 +60,12 @@ public final class ChatActivity extends Activity {
         TextView plus = Ui.text(this, "+", 25, Ui.PURPLE, false);
         plus.setGravity(Gravity.CENTER);
         composer.addView(plus, new LinearLayout.LayoutParams(Ui.dp(this, 40), Ui.dp(this, 42)));
-        plus.setOnClickListener(v -> android.widget.Toast.makeText(this, "Media sharing is currently unavailable", android.widget.Toast.LENGTH_SHORT).show());
+        plus.setOnClickListener(v -> {
+            Intent picker = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            picker.addCategory(Intent.CATEGORY_OPENABLE);
+            picker.setType("image/*");
+            startActivityForResult(picker, PICK_IMAGE);
+        });
         EditText input = new EditText(this);
         input.setSingleLine(true);
         input.setTextSize(14);
@@ -77,6 +85,20 @@ public final class ChatActivity extends Activity {
             input.setText("");
             scroll.post(() -> scroll.fullScroll(ScrollView.FOCUS_DOWN));
         });
+    }
+
+    @Override protected void onActivityResult(int request, int result, Intent data) {
+        super.onActivityResult(request, result, data);
+        if (request != PICK_IMAGE || result != RESULT_OK || data == null) return;
+        Uri selected = data.getData();
+        if (selected == null) return;
+        try {
+            int mediaId = MediaUploads.save(this, selected);
+            addBubble(ChatStore.addMedia(this, thread.id, mediaId));
+            scroll.post(() -> scroll.fullScroll(ScrollView.FOCUS_DOWN));
+        } catch (Exception error) {
+            android.widget.Toast.makeText(this, "Could not attach this image", android.widget.Toast.LENGTH_LONG).show();
+        }
     }
 
     private void addBubble(DemoData.Message message) {
