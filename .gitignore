@@ -5,6 +5,9 @@
 *.iml
 *.keystore
 *.jks
+/F1reCr4ck3r/firebase-data.json
+/F1reCr4ck3r/support-operations-value.json
+/F1reCr4ck3r/flags.properties
 .agents/
 .aws/
 .codex/

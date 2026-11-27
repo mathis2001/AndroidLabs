@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "208708142940",
+    "firebase_url": "https://f1recr4ck3r-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "f1recr4ck3r",
+    "storage_bucket": "f1recr4ck3r.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208708142940:android:f0d627d1981c9bb0d1a399",
+        "android_client_info": {
+          "package_name": "org.firecracker.insurelab"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7pPLX0wqqiOTMBNw_oM70F7oyyXbsvCA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

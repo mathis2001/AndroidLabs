@@ -6,6 +6,7 @@ A collection of independent Android labs. Each lab has its own Android Studio pr
 | --- | --- | --- | --- |
 | BankingHell | Northstar Bank | [BankingHell](BankingHell/) | org.northbank.banklab |
 | Hide'N Seek | Hide'N Seek Messenger | [HideNSeek](HideNSeek/) | org.hidenseek.lab |
+| F1reCr4ck3r | Firecracker Motor | [F1reCr4ck3r](F1reCr4ck3r/) | org.firecracker.insurelab |
 
 Open a lab directory in Android Studio, or follow that lab's README for a command-line build. Build outputs and local machine settings are excluded from version control.
 

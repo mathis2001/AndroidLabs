@@ -1,0 +1,47 @@
+import groovy.json.JsonSlurper
+
+plugins { id 'com.android.application' }
+
+def firebaseAppId = ''
+def firebaseApiKey = ''
+def firebaseProjectId = 'f1recr4ck3r'
+def firebaseFile = file('google-services.json')
+if (firebaseFile.exists()) {
+    def firebaseJson = new JsonSlurper().parse(firebaseFile)
+    def client = firebaseJson.client.find {
+        it.client_info.android_client_info.package_name == 'org.firecracker.insurelab'
+    }
+    if (client == null) {
+        throw new GradleException('google-services.json has no org.firecracker.insurelab Android app')
+    }
+    firebaseAppId = client.client_info.mobilesdk_app_id
+    firebaseApiKey = client.api_key[0].current_key
+    firebaseProjectId = firebaseJson.project_info.project_id
+}
+
+android {
+    namespace 'org.firecracker.insurelab'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'org.firecracker.insurelab'
+        minSdk 26
+        targetSdk 34
+        versionCode 1
+        versionName '1.0'
+        resValue 'string', 'firebase_app_id', firebaseAppId
+        resValue 'string', 'firebase_api_key', firebaseApiKey
+        resValue 'string', 'firebase_project_id', firebaseProjectId
+    }
+
+    buildTypes {
+        debug {
+            debuggable false
+        }
+    }
+}
+
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:35.2.0')
+    implementation 'com.google.firebase:firebase-config'
+}

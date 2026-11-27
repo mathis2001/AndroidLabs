@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Firecracker Motor</string>
+    <string name="firebase_database_url">https://f1recr4ck3r-default-rtdb.europe-west1.firebasedatabase.app/</string>
+</resources>
